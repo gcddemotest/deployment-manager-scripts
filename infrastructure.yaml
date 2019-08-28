@@ -1,0 +1,73 @@
+imports:
+
+# templates
+- path: tpl/docker-vm-pool.jinja
+- path: tpl/instance.jinja
+
+# scripts
+- path: scripts/cloudsql-proxy.sh
+  name: cloudsql-proxy.sh
+- path: scripts/blackbox-vm.sh
+  name: blackbox-vm.sh
+- path: scripts/frontend-vm.sh
+  name: frontend-vm.sh
+
+
+resources:
+
+- name: frontend-app
+  type: tpl/instance.jinja
+  properties:
+    zone: us-central1-c
+    machineType: f1-micro
+    metadata-from-file:
+      startup-script: frontend-vm.sh
+    metadata:
+      blackbox-address: $(ref.blackbox-app.address)
+      docker-app-address: $(ref.docker-app.address)
+
+- name: blackbox-app
+  type: tpl/instance.jinja
+  properties:
+    zone: us-central1-c
+    machineType: f1-micro
+    metadata-from-file:
+      startup-script: blackbox-vm.sh
+    metadata:
+      blabla: blabla
+
+- name: cloudsql-proxy-instance
+  type: tpl/instance.jinja
+  properties:
+    zone: us-central1-c
+    machineType: f1-micro
+    metadata-from-file:
+      startup-script: cloudsql-proxy.sh
+    metadata:
+      cloud-sql-instances: gcd-jr-demo:us-central1:managed-cloudsql-v08-wip=tcp:0.0.0.0:3306
+
+- name: docker-app
+  type: tpl/docker-vm-pool.jinja
+  properties:
+    name: backend-app
+    containerImage: gcr.io/gcd-jr-demo/backend-sample-app:latest
+    zone: us-central1-c
+    machineType: f1-micro
+    size: 1
+    maxSize: 10
+    containerPort: 8080
+    hostPort: 8080
+    coolDownPeriodSec: 15
+    healthCheckPort: 8080
+    healthCheckPath: /
+    containerEnv: 
+      - name: NODE_ENV
+        value: prod
+      - name: DB_HOST
+        value: $(ref.cloudsql-proxy-instance.address)
+      - name: DB_USER
+        value: myuser
+      - name: DB_PASSWORD
+        value: mypassword
+      - name: DB_DATABASE
+        value: mydb
