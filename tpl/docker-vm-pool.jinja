@@ -78,7 +78,7 @@ resources:
   type: compute.v1.forwardingRule
   properties:
     region: {{ REGION }}
-    #loadBalancingScheme: INTERNAL_SELF_MANAGED
+    #loadBalancingScheme: INTERNAL_SELF_MANAGED see https://github.com/GoogleCloudPlatform/deploymentmanager-samples/blob/master/examples/v2/internal_lb/python/internal_lb.py
     portRange: 8080-8080
     target: $(ref.{{ env["name"] }}-target-pool.selfLink)
 
