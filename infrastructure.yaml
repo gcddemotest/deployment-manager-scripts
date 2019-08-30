@@ -32,7 +32,7 @@ resources:
     metadata-from-file:
       startup-script: blackbox-vm.sh
     metadata:
-      blabla: blabla
+      NODE_ENV: prod
 
 - name: frontend-app
   type: tpl/docker-vm-pool.jinja
