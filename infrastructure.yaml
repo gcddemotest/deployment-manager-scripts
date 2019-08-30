@@ -32,7 +32,7 @@ resources:
     metadata-from-file:
       startup-script: blackbox-vm.sh
     metadata:
-      NODE_ENV: prod
+      NODE_ENV: production
 
 - name: frontend-app
   type: tpl/docker-vm-pool.jinja
@@ -49,7 +49,7 @@ resources:
     healthCheckPath: /
     containerEnv: 
       - name: NODE_ENV 
-        value: prod
+        value: production
       - name: BACKEND_APP_ADDRESS
         value: $(ref.backend-app.address)
       - name: BACKEND_APP_PORT
@@ -74,7 +74,7 @@ resources:
     healthCheckPath: /
     containerEnv: 
       - name: NODE_ENV
-        value: prod
+        value: production
       - name: DB_HOST
         value: $(ref.cloudsql-proxy-instance.address)
       - name: DB_USER
