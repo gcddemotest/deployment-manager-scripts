@@ -14,10 +14,10 @@ resources:
             apiVersion: v1
             kind: Pod
             metadata:
-              name: {{ properties["name"] }}
+              name: {{ env["name"] }}
             spec:
               containers:
-              - name: {{ properties["name"] }}
+              - name: {{ env["name"] }}
                 image: {{ properties["containerImage"] }}
                 imagePullPolicy: Always
                 ports:
