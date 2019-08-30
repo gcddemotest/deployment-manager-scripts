@@ -51,7 +51,7 @@ resources:
       - name: NODE_ENV 
         value: prod
       - name: BACKEND_APP_ADDRESS
-        value: $(ref.cloudsql-proxy-instance.address)
+        value: $(ref.backend-app.address)
       - name: BACKEND_APP_PORT
         value: 8080
       - name: BLACKBOX_APP_ADDRESS
