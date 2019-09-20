@@ -4,8 +4,6 @@
 resources:
 - name: {{ TPL_NAME }}
   type: compute.v1.instanceTemplate
-  labels:
-    generated-by: deployment-manager
   properties:
     zone: {{ properties["zone"] }}
     properties:

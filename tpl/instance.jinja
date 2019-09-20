@@ -1,8 +1,6 @@
 resources:
   - name: {{ env["name" ]}}-vm
     type: compute.v1.instance
-    labels:
-      generated-by: deployment-manager
     properties:
       machineType: projects/{{ env["project"] }}/zones/{{properties["zone"]}}/machineTypes/{{ properties['machineType'] }}
       zone: {{ properties['zone'] }}
