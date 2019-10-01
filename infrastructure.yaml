@@ -9,8 +9,6 @@ imports:
   name: cloudsql-proxy.sh
 - path: scripts/blackbox-vm.sh
   name: blackbox-vm.sh
-- path: scripts/frontend-vm.sh
-  name: frontend-vm.sh
 
 resources:
 
@@ -32,7 +30,7 @@ resources:
     metadata-from-file:
       startup-script: blackbox-vm.sh
     metadata:
-      NODE_ENV: production
+      NODE_ENV: prod
 
 - name: frontend-app
   type: tpl/docker-vm-pool.jinja
@@ -47,9 +45,9 @@ resources:
     coolDownPeriodSec: 15
     healthCheckPort: 8080
     healthCheckPath: /
-    containerEnv: 
-      - name: NODE_ENV 
-        value: production
+    containerEnv:
+      - name: NODE_ENV
+        value: prod
       - name: BACKEND_APP_ADDRESS
         value: $(ref.backend-app.address)
       - name: BACKEND_APP_PORT
@@ -72,9 +70,9 @@ resources:
     coolDownPeriodSec: 15
     healthCheckPort: 8080
     healthCheckPath: /
-    containerEnv: 
+    containerEnv:
       - name: NODE_ENV
-        value: production
+        value: prod
       - name: DB_HOST
         value: $(ref.cloudsql-proxy-instance.address)
       - name: DB_USER
@@ -83,3 +81,15 @@ resources:
         value: mypassword
       - name: DB_DATABASE
         value: mydb
+
+- name: infrastructure-runtime-config
+  type: runtimeconfig.v1beta1.config
+  properties:
+    config: infrastructure
+
+- name: infrastructure
+  type: runtimeconfig.v1beta1.variable
+  properties:
+    parent: $(ref.infrastructure-runtime-config.name)
+    variable: entrypoint-address
+    text:  $(ref.frontend-app.address)

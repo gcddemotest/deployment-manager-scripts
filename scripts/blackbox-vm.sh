@@ -13,7 +13,7 @@ After=networking.service
 Type=simple
 UMask=022
 WorkingDirectory=/var/app
-ExecStart=NODE_ENV=production /usr/local/bin/app
+ExecStart=/usr/local/bin/app
 Restart=always
 User=app
 
